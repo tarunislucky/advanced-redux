@@ -5,7 +5,7 @@ import CartItem from './CartItem';
 
 const Cart = (props) => {
   const { cartCount, items: cartItems } = useSelector(state => {
-    return state;
+    return state.cart;
   });
 
   return (
