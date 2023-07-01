@@ -3,22 +3,22 @@ import classes from './Products.module.css';
 
 const dummyData = [
   {
-    id: 1,
-    title: "Test-1",
+    id: "p1",
+    title: "Apples",
     price: 6,
-    description: 'This is a first product - amazing!'
+    description: 'Fine red apples'
   },
   {
-    id: 2,
-    title: "Test-2",
+    id: "p2",
+    title: "Bananas",
     price: 7,
-    description: 'This is a first product - amazing!'
+    description: 'Fine green bananas'
   },
   {
-    id: 3,
-    title: "Test-3",
+    id: "p3",
+    title: "Oranges",
     price: 8,
-    description: 'This is a first product - amazing!'
+    description: 'Your cool oranges for the summer'
   }
 ];
 const Products = (props) => {

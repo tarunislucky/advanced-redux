@@ -4,34 +4,30 @@ const cartSlice = createSlice({
 	name: "cart",
 	initialState: initialCartState,
 	reducers: {
-		increaseCount: (state, action) => {
-			const itemToBeAdded = action.payload;
+		insertItemToCart: (state, action) => {
+			const newItem = action.payload;
 			//check if item id already exists in items 
-			const indexOfExistingItem = state.items.findIndex(item => item.id === itemToBeAdded.id);
-			const existingItem = state.items[indexOfExistingItem];
-			//if exists then increase the item count , else push
-			if (indexOfExistingItem !== -1) {
-				existingItem.quantity += 1;
+			const existingItem = state.items.find(item => item.id === newItem.id);
+			//if does not exist already, push
+			if (!existingItem) {
+				state.items.push({ ...newItem, quantity: 1, totalPrice: newItem.price });
+				state.cartCount++;
 			} else {
-				state.items.push({ ...itemToBeAdded, quantity: 1 });
-				state.cartCount += 1;
+				existingItem.quantity++;
+				existingItem.totalPrice = existingItem.totalPrice + existingItem.price;
 			}
 		},
-		decreaseCount: (state, action) => {
-			const itemToBeRemoved = action.payload;
+		removeItemFromCart: (state, action) => {
+			const id = action.payload;
 			//check if item id already exists in items 
-			const indexOfExistingItem = state.items.findIndex(item => item.id === itemToBeRemoved.id);
-			const existingItem = state.items[indexOfExistingItem];
-			//if exists then decrease the item count 
-			if (indexOfExistingItem === -1) {
-				return;
-			}
+			const existingItem = state.items.find(item => item.id === id);
 			if (existingItem.quantity === 1) {
-				state.items.splice(indexOfExistingItem, 1);
-				state.cartCount -= 1;
-				return;
+				state.items = state.items.filter(item => item.id !== existingItem.id)
+				state.cartCount--;
+			} else {
+				existingItem.quantity--;
+				existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
 			}
-			existingItem.quantity -= 1;
 		}
 	}
 });
