@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-const initialCartState = { cartCount: 0, cartVisible: false, items: [] }
+const initialCartState = { cartCount: 0, cartVisibility: false, items: [] }
 const cartSlice = createSlice({
 	name: "cart",
 	initialState: initialCartState,
 	reducers: {
-		addItem: (state, action) => {
+		increaseCount: (state, action) => {
 			const itemToBeAdded = action.payload;
 			//check if item id already exists in items 
 			const indexOfExistingItem = state.items.findIndex(item => item.id === itemToBeAdded.id);
@@ -17,14 +17,24 @@ const cartSlice = createSlice({
 				state.cartCount += 1;
 			}
 		},
-		removeItem: (state) => {
-
-		},
-		setCartCount: (state) => {
-
+		decreaseCount: (state, action) => {
+			const itemToBeRemoved = action.payload;
+			//check if item id already exists in items 
+			const indexOfExistingItem = state.items.findIndex(item => item.id === itemToBeRemoved.id);
+			const existingItem = state.items[indexOfExistingItem];
+			//if exists then decrease the item count 
+			if (indexOfExistingItem === -1) {
+				return;
+			}
+			if (existingItem.quantity === 1) {
+				state.items.splice(indexOfExistingItem, 1);
+				state.cartCount -= 1;
+				return;
+			}
+			existingItem.quantity -= 1;
 		},
 		toggleCartVisibility: (state) => {
-			state.cartVisible = !state.cartVisible;
+			state.cartVisibility = !state.cartVisibility;
 		}
 	}
 });
