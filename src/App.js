@@ -4,9 +4,7 @@ import Cart from './components/Cart/Cart';
 import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 import Notification from './components/UI/Notification';
-import { sendCartData } from './store/cart-slice';
-
-let isInitial = true;
+import { fetchCartData, sendCartData } from './store/cart-actions';
 
 function App() {
   const dispatch = useDispatch();
@@ -21,12 +19,12 @@ function App() {
   })
 
   useEffect(() => {
-    // isInitial stops code from sending api request on first render
-    if (isInitial) {
-      isInitial = false;
-      return;
-    };
-    dispatch(sendCartData(cart));
+    dispatch(fetchCartData());
+  }, [dispatch]);
+  useEffect(() => {
+    if (cart.changed) {
+      dispatch(sendCartData(cart));
+    }
   }, [cart, dispatch]);
 
   return (
